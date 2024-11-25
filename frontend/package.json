@@ -1,0 +1,46 @@
+{
+  "name": "dsafinal",
+  "version": "1.0.0",
+  "proxy": "http://localhost:5000",
+  "description": "Frontend",
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.6.0",
+    "@radix-ui/react-menubar": "^1.1.2",
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.7.7",
+    "body-parser": "^1.20.3",
+    "express": "^4.21.1",
+    "leaflet": "^1.9.4",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-leaflet": "^4.2.1",
+    "react-router-dom": "^6.27.0",
+    "react-scripts": "5.0.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Gnot727/DSAFinal.git"
+  },
+  "keywords": [
+    "Node.js",
+    "Firebase",
+    "React.js",
+    "Leaflet.js",
+    "MergeSort",
+    "QuickSort",
+    "COVID-19",
+    "DataStructures",
+    "Algorithms"
+  ],
+  "author": "Goran Not, Jack Lohse",
+  "license": "ISC"
+
+}
