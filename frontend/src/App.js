@@ -1,5 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
+import MapComponent from './Map.jsx';
 
 function App() {
   return (
@@ -17,9 +18,11 @@ function App() {
         >
           Learn React
         </a>
+        <MapComponent/>
       </header>
     </div>
   );
 }
 
 export default App;
+
