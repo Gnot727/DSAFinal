@@ -5,7 +5,7 @@ const MapComponent = () => {
   const position = [51.505, -0.09]; // Example coordinates for London
 
   return (
-    <MapContainer center={position} zoom={13} style={{ height: "400px", width: "100%" }}>
+    <MapContainer center={position} zoom={13} style={{ height: "100vh", width: "100%" }}>
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
