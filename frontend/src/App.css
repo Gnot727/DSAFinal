@@ -1,55 +1,69 @@
 
+/* Set the box model to border-box for consistent sizing */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* General styles for the app container */
 .App {
-height: 100vh;
-display: flex;
-flex-direction: column;
-text-align: center;
-}
-
-.container{
-  display:flex;
-  height: 100%;
-}
-
-.menubar{
-  flex:1;
-  background-color: rgb(136, 136, 136);
-  padding: 10px;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  min-height: 100vh; /* Make it take the full viewport height */
   display: flex;
-  z-index: 10;
-
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: #f9f9f9; /* Light background color for visibility */
+  padding: 16px;
 }
 
-.menu-content{
-align-items: center;
-display: flex;
-}
-
-.menu-buttons{
-  display: flex;
-  justify-content: space-around;
+/* HStack spacing */
+.HStack {
   width: 100%;
-
-  margin:0;
-}
-.menu-buttons li{
-  margin: 0 10px;
+  max-width: 800px;
+  margin-bottom: 16px; /* Add space below the input area */
 }
 
-.menu-buttons button{
-  background-color: white;
-  color: black;
-  cursor: pointer;
-  word-spacing: 2px;
-  padding: 10px 20px;
-  border:none;
-  border-radius: 5px;
+/* Inputs and select should have some padding and styling */
+input,
+select {
+  padding: 8px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  width: 100%; /* Make inputs and selects responsive */
 }
 
-.map-area{
-  flex-grow:1;
-  position: relative;
-  z-index: 0;
+/* Add focus styling for better accessibility */
+input:focus,
+select:focus {
+  border-color: #3182ce; /* Chakra UI's default blue color */
+  box-shadow: 0 0 0 2px rgba(49, 130, 206, 0.6); /* Subtle blue shadow */
 }
 
+/* Map area styling */
+.map-area {
+  width: 100%;
+  max-width: 800px;
+  height: 400px; /* Set a fixed height for the map */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #eaeaea; /* Light gray background for the map placeholder */
+  margin-top: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #555;
+}
 
+/* Placeholder text for the map area */
+.map-area::after {
+  content: "Map will be displayed here";
+  font-size: 1rem;
+  color: #888;
+}
