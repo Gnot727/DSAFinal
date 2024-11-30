@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import countries from "./assets/custom.geo.json";
 import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet';
+import {geojson_to_db_map} from "./helpers/geojsonDBMap.js";
 
-const MapComponent = () => {
+const MapComponent = ({CountrySelect}) => {
+  console.log("Received CountrySelect in MapComponent:", CountrySelect);
   const position = [51.505, -0.09]; // Example coordinates for London
 
   const [selectedCountry, setSelectedCountry] = useState(null);
@@ -19,8 +21,15 @@ const MapComponent = () => {
 
   const clickFeature = (e) => {
     let layer = e.target;
+    const name = layer.feature.properties.name
+    const standardizedName = geojson_to_db_map[name] || name;
     console.log(layer.feature.properties);
+    console.log("Clicked Country:", name);
+    console.log("Standardized Country:", standardizedName);
     setSelectedCountry(layer.feature.properties);
+    if(CountrySelect){
+      CountrySelect(standardizedName);
+    }
   };  
   
   const onEachFeature = (feature, layer) => {

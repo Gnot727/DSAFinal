@@ -2,6 +2,7 @@ import React from "react"
 import { Box, Input, Button, Flex, Text, Select, Stack, Checkbox,Modal,ModalOverlay,
     ModalContent,ModalHeader,ModalBody,ModalFooter,ModalCloseButton} from "@chakra-ui/react";
 import { ArrowForwardIcon } from '@chakra-ui/icons'
+import MapComponent from "./Map";
 
 class TopBar extends React.Component {
     constructor(props){
@@ -14,9 +15,16 @@ class TopBar extends React.Component {
             isAscending: false,
             isModalOpen: false,
         }
+        this.handleCountrySelect = this.handleCountrySelect.bind(this);
     }
     handleCountryChange= (event) =>{
         this.setState({country: event.target.value});
+    }
+    handleCountrySelect = (selectedCountry) =>{
+        console.log("Selected Country in TopBar:", selectedCountry);
+        if(selectedCountry){
+        this.setState({country: selectedCountry});
+        }
     }
     handleProvinceChange =(event) =>{
         this.setState({province: event.target.value});
@@ -39,10 +47,10 @@ class TopBar extends React.Component {
     closeModal = () =>{
         this.setState({isModalOpen:false});
     }
-    render() {
-        const {country, province, dataCategory, sortMethod, isAscending, isModalOpen} = this.state;
-        
 
+    render() {
+        const {country, province, category, sortMethod, isAscending, isModalOpen} = this.state;
+        
         return (
         <Box
             bg="#FFFAFA"
@@ -67,9 +75,9 @@ class TopBar extends React.Component {
                         <Select placeholder='Select an option' 
                         value ={this.state.dataCategory}
                         onChange={this.handleDataCategoryChange}>
-                            <option value = "deathCat">Deaths</option>
-                            <option value = "confirmedCat">Confirmed Cases</option>
-                            <option value = "recoveredCat">Recovered Cases</option>
+                            <option value = "deaths">Deaths</option>
+                            <option value = "confirmed cases">Confirmed Cases</option>
+                            <option value = "recovered cases">Recovered Cases</option>
                         </Select>
                     </Box>
                     <Box>
@@ -77,8 +85,8 @@ class TopBar extends React.Component {
                         <Select placeholder='Select an option'
                         value={this.state.sortMethod}
                         onChange={this.handleSortMethodChange}>
-                        <option value = "mergeSort">Merge Sort</option>
-                        <option value = "quickSort">Quick Sort</option>
+                        <option value = "Merge Sort">Merge Sort</option>
+                        <option value = "Quick Sort">Quick Sort</option>
                         </Select>
                     </Box>
                     <Box>
@@ -97,7 +105,12 @@ class TopBar extends React.Component {
                         <Button colorScheme='green' size="lg" rightIcon={<ArrowForwardIcon />} onClick={this.openModal}>Run</Button>
                     </Flex>
                 </Box>
+                <Box>
+                <MapComponent CountrySelect ={this.handleCountrySelect} onChange = {this.handleCountrySelect}/>
+                </Box>
+                
             </Flex>
+
             <Modal isOpen={isModalOpen} onClose={this.closeModal}>
                 <ModalOverlay>
                     <ModalContent>
@@ -106,7 +119,7 @@ class TopBar extends React.Component {
                         <ModalBody>
                         <Text>Country/Region: {country || "Not specified"}</Text>
                         <Text>Province/State: {province || "Not specified"}</Text>
-                        <Text>Data Category: {dataCategory || "Not selected"}</Text>
+                        <Text>Data Category: {category || "Not selected"}</Text>
                         <Text>Sort Method: {sortMethod || "Not selected"}</Text>
                         <Text>Ascending: {isAscending ? "Yes" : "No"}</Text>
                         </ModalBody>
