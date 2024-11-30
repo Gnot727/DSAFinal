@@ -1,5 +1,7 @@
 import firebase from '../middleware/firebase.js';
 import CovidCase from '../models/covidCaseModel.js';
+import mergeSort from '../helpers/mergeSort.js';
+import quickSort from '../helpers/quickSort.js';
 import {
   getFirestore,
   collection,
@@ -37,12 +39,6 @@ export const getCasesByRequest = async (req, res, next) => {
             q = query(covidCaseRef, where('Country', '==', country));
         }
 
-        /* REVISIT THIS
-
-        q = query(q, select("Country", "Province", dataCategory));
-
-        */
-
         const querySnapshot = await getDocs(q);
 
         querySnapshot.forEach((doc) => {
@@ -63,12 +59,19 @@ export const getCasesByRequest = async (req, res, next) => {
     }
 
     // Sorting
+    let sortedArray, time;
     if (sortMethod === 'merge') {
-        const [sortedArray, time] = mergeSort(results, dataCategory, ascending);
+        const start = performance.now();
+        sortedArray = mergeSort(results, 0, results.length - 1, dataCategory);
+        const end = performance.now();  
+        time = end - start;
     } else if (sortMethod === 'quick') {
-        const [sortedArray, time] = quickSort(results, dataCategory, ascending);
+        const start = performance.now();
+        sortedArray = quickSort(results, 0, results.length - 1, dataCategory);
+        const end = performance.now();  
+        time = end - start;
     }
 
 
-    res.status(200).send(results);
+    res.status(200).send({ time: time, sorted: sortedArray });
 }
