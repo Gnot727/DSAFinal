@@ -1,47 +1,93 @@
 import React from "react"
-import { Box, Input, Button, Flex, Text, Select, Stack, Checkbox,Modal,ModalOverlay,
-    ModalContent,ModalHeader,ModalBody,ModalFooter,ModalCloseButton} from "@chakra-ui/react";
+import { Box, Button, Flex, Text, Select, Stack, Checkbox,Modal,ModalOverlay,
+    ModalContent, ModalHeader, ModalBody, ModalFooter, ModalCloseButton
+} from "@chakra-ui/react";
+    import countries from "./assets/custom.geo.json";
 import { ArrowForwardIcon } from '@chakra-ui/icons'
+import axios from "axios";
+import  geojson_to_db_map from "./helpers/geojsonDBMap.js"
 
 class TopBar extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            country: '',
-            province: '',
             category: '',
             sortMethod:'',
             isAscending: false,
             isModalOpen: false,
+            selectedCountry: props.selectedCountry,
+            inputValue: this.props.selectedCountry ? this.props.selectedCountry.name : ''
+        }
+
+        this.countryOptions = countries.features
+            .map(feature => feature.properties.name)
+            .sort((a, b) => a.localeCompare(b));
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.selectedCountry !== this.props.selectedCountry) {
+            this.setState({
+                selectedCountry: this.props.selectedCountry,
+                inputValue: this.props.selectedCountry ? this.props.selectedCountry.name : ''
+            });
         }
     }
-    handleCountryChange= (event) =>{
-        this.setState({country: event.target.value});
-    }
-    handleProvinceChange =(event) =>{
-        this.setState({province: event.target.value});
+
+    handleCountryChange = (event) => {
+        const inputValue = event.target.value;
+
+        this.setState({ inputValue });
+        
+        const matchedCountry = countries.features.find(feature => 
+            feature.properties.name.toLowerCase() === inputValue.toLowerCase()
+        );
+
+        if (matchedCountry) {
+            this.props.handleCountrySelect(matchedCountry.properties)
+        }
     }
 
     handleDataCategoryChange = (event) =>{
         this.setState({category: event.target.value});
     }
+
     handleSortMethodChange = (event) =>{
         this.setState({sortMethod: event.target.value});
-
     }
+
     handleAscendingChange = (event) =>{
         this.setState({isAscending:event.target.checked});
+    }
+
+    runQuery = () => {
+
+        let countryName = geojson_to_db_map[this.state.selectedCountry.name];
+
+        let options = {
+            country: countryName,
+            dataCategory: this.state.category,
+            sortMethod: this.state.sortMethod,
+            ascending: this.state.isAscending
+        }
+
+        console.log(options)
+    
+        axios.post("http://localhost:8080/api/query", options)
+            .then(response => {
+                console.log(response)
+            })
     }
 
     openModal = () => {
         this.setState({isModalOpen:true});
     }
+
     closeModal = () =>{
         this.setState({isModalOpen:false});
     }
+    
     render() {
-        const {country, province, dataCategory, sortMethod, isAscending, isModalOpen} = this.state;
-        
+        const { category, sortMethod, isAscending, isModalOpen } = this.state;
 
         return (
         <Box
@@ -52,24 +98,26 @@ class TopBar extends React.Component {
                 <Stack spacing={10} direction='row' width="100%">
                     <Box>
                         <Text>Country/Region</Text>
-                        <Input placeholder='Type a country'
-                        value ={this.state.country}
-                        onChange={this.handleCountryChange} />
-                    </Box>
-                    <Box>
-                        <Text>Province/State</Text>
-                        <Select placeholder='Select an option' 
-                        value ={this.state.province}
-                        onChange={this.handleProvinceChange}/>
+                            <Select
+                                placeholder='Select a country'
+                                value={this.state.inputValue || ''}
+                                
+                                onChange={this.handleCountryChange}>
+                                {this.countryOptions.map((countryName) => (
+                                    <option key={countryName} value={countryName}>
+                                        {countryName}
+                                    </option>
+                                ))}
+                            </Select>
                     </Box>
                     <Box>
                         <Text>Data Category</Text>
                         <Select placeholder='Select an option' 
                         value ={this.state.dataCategory}
                         onChange={this.handleDataCategoryChange}>
-                            <option value = "deathCat">Deaths</option>
-                            <option value = "confirmedCat">Confirmed Cases</option>
-                            <option value = "recoveredCat">Recovered Cases</option>
+                            <option value = "deaths">Deaths</option>
+                            <option value = "confirmed">Confirmed Cases</option>
+                            <option value = "recovered">Recovered Cases</option>
                         </Select>
                     </Box>
                     <Box>
@@ -77,8 +125,8 @@ class TopBar extends React.Component {
                         <Select placeholder='Select an option'
                         value={this.state.sortMethod}
                         onChange={this.handleSortMethodChange}>
-                        <option value = "mergeSort">Merge Sort</option>
-                        <option value = "quickSort">Quick Sort</option>
+                        <option value = "merge">Merge Sort</option>
+                        <option value = "quick">Quick Sort</option>
                         </Select>
                     </Box>
                     <Box>
@@ -94,7 +142,7 @@ class TopBar extends React.Component {
                 </Stack>
                 <Box alignSelf="center" mr={100}>
                     <Flex direction="column" height="100%" alignContent="center" justifyContent="flex-end">
-                        <Button colorScheme='green' size="lg" rightIcon={<ArrowForwardIcon />} onClick={this.openModal}>Run</Button>
+                        <Button colorScheme='green' size="lg" rightIcon={<ArrowForwardIcon />} onClick={this.runQuery}>Run</Button>
                     </Flex>
                 </Box>
             </Flex>
@@ -104,9 +152,8 @@ class TopBar extends React.Component {
                         <ModalHeader>Sort Data Summary </ModalHeader>
                         <ModalCloseButton/>
                         <ModalBody>
-                        <Text>Country/Region: {country || "Not specified"}</Text>
-                        <Text>Province/State: {province || "Not specified"}</Text>
-                        <Text>Data Category: {dataCategory || "Not selected"}</Text>
+                        <Text>Country/Region: {this.state.inputValue || "Not specified"}</Text>
+                        <Text>Data Category: {category || "Not selected"}</Text>
                         <Text>Sort Method: {sortMethod || "Not selected"}</Text>
                         <Text>Ascending: {isAscending ? "Yes" : "No"}</Text>
                         </ModalBody>

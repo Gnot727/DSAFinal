@@ -58,7 +58,7 @@ export const getCasesByRequest = async (req, res, next) => {
         return;
     }
 
-    // Sorting
+    
     let sortedArray, time;
     if (sortMethod === 'merge') {
         const start = performance.now();

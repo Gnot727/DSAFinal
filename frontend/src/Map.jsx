@@ -1,43 +1,49 @@
-import React, { useState } from 'react';
+import React, { Component } from 'react';
 import countries from "./assets/custom.geo.json";
 import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet';
 
-const MapComponent = () => {
-  const position = [51.505, -0.09]; // Example coordinates for London
-
-  const [selectedCountry, setSelectedCountry] = useState(null);
-  const [hoveredCountry, setHoveredCountry] = useState(null);
-
-  const highlightFeature = (e) => {
-    let layer = e.target;
-    setHoveredCountry(layer.feature.properties);
+class MapComponent extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedCountry: props.selectedCountry,
+      hoveredCountry: null,
+      geoJsonKey: 0,
+      position: [51.505, -0.09]
+    };
   }
 
-  const resetHighlight = (e) => {
-    setHoveredCountry(null);
-  }
+  highlightFeature = (e) => {
+    const layer = e.target;
+    this.setState({ hoveredCountry: layer.feature.properties });
+  };
 
-  const clickFeature = (e) => {
-    let layer = e.target;
-    console.log(layer.feature.properties);
-    setSelectedCountry(layer.feature.properties);
-  };  
-  
-  const onEachFeature = (feature, layer) => {
+  resetHighlight = () => {
+    this.setState({ hoveredCountry: null });
+  };
+
+  clickFeature = (e) => {
+    const layer = e.target;
+    this.props.handleCountrySelect(layer.feature.properties)
+  };
+
+  onEachFeature = (feature, layer) => {
     layer.on({
-      click: clickFeature,
-      mouseover: highlightFeature,
-      mouseout: resetHighlight,
+      click: this.clickFeature,
+      mouseover: this.highlightFeature,
+      mouseout: this.resetHighlight,
     });
-  }
+  };
 
-  const style = (feature) => {
+  style = (feature) => {
+    const { selectedCountry, hoveredCountry } = this.state;
+
     let mapStyle = {
-        fillColor: "#4A7856",
-        weight: 1,
-        opacity: 0,
-        color: '#4A7856',
-        fillOpacity: 0
+      fillColor: "#4A7856",
+      weight: 1,
+      opacity: 0,
+      color: '#4A7856',
+      fillOpacity: 0,
     };
 
     if (selectedCountry && feature.properties.iso_a3 === selectedCountry.iso_a3) {
@@ -55,19 +61,41 @@ const MapComponent = () => {
     }
 
     return mapStyle;
-  } 
+  };
 
-  return (
-    <MapContainer maxBounds={[[-90, -180], [90, 180]]} center={position} zoom={3} style={{ height: "100%", width: "100%" }}>
-      <TileLayer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
-        minZoom={3}
-        maxZoom={20}      
-      />
-      <GeoJSON data={countries} style={style} onEachFeature={onEachFeature} />
-    </MapContainer>
-  );
-};
+
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevState.selectedCountry !== this.state.selectedCountry ||
+      prevState.hoveredCountry !== this.state.hoveredCountry
+    ) {
+      this.setState((state) => ({ geoJsonKey: state.geoJsonKey + 1 }));
+    }
+
+    if (prevProps.selectedCountry !== this.props.selectedCountry) {
+      this.setState({ selectedCountry: this.props.selectedCountry });
+    }
+  }
+
+  render() {
+
+    return (
+      <MapContainer
+        maxBounds={[[-90, -180], [90, 180]]}
+        center={this.state.position}
+        zoom={3}
+        style={{ height: "100%", width: "100%" }}
+      >
+        <TileLayer
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
+          minZoom={3}
+          maxZoom={20}
+        />
+        <GeoJSON key={this.state.geoJsonKey} data={countries} style={this.style} onEachFeature={this.onEachFeature} />
+      </MapContainer>
+    );
+  }
+}
 
 export default MapComponent;

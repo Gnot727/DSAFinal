@@ -4,6 +4,6 @@ import { getCasesByRequest } from '../controllers/covidCaseController.js';
 
 const router = express.Router();
 
-router.get('/query', getCasesByRequest);
+router.post('/query', getCasesByRequest);
 
 export default router;

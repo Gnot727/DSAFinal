@@ -1,4 +1,4 @@
-geojson_to_db_map = {
+const geojson_to_db_map = {
     "China": "Mainland China",
     "El Salvador": "El Salvador",
     "Eq. Guinea": "Equatorial Guinea",
@@ -193,3 +193,5 @@ geojson_to_db_map = {
     "Vanuatu": "Vanuatu",
     "Micronesia": "Micronesia"
 }
+
+export default geojson_to_db_map;
