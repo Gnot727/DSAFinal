@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import countries from "./assets/custom.geo.json";
 import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet';
 
-class MapComponent extends Component {
+class MapComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {

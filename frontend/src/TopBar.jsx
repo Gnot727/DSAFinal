@@ -145,7 +145,11 @@ class TopBar extends React.Component {
                         <Button colorScheme='green' size="lg" rightIcon={<ArrowForwardIcon />} onClick={this.runQuery}>Run</Button>
                     </Flex>
                 </Box>
+                <Box>
+                </Box>
+                
             </Flex>
+
             <Modal isOpen={isModalOpen} onClose={this.closeModal}>
                 <ModalOverlay>
                     <ModalContent>
