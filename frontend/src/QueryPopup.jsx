@@ -91,9 +91,9 @@ class QueryPopup extends React.Component {
                         <ModalCloseButton/>
                         <ModalBody>
                             <Flex>
-                                <Box w="100%" maxW="300px">
-                                    <Stack spacing = {10}>
-                                        <Spacer></Spacer>
+                                <Box w="100%" maxW="300px" mr={4}>
+                                    <Stack spacing = {8}>
+                                        <Spacer />
                                         <Flex justify = "space-between">
                                         <Text fontWeight={"bold"}>Sorted using: </Text>
                                         <Text fontWeight={"semibold"}>{this.props.sortMethod}</Text>
@@ -117,12 +117,12 @@ class QueryPopup extends React.Component {
                                                 <Flex justify = "space-between">
                                                 <Text fontWeight={"bold"}>Number of partitions: </Text>
                                                 <Text fontWeight={"semibold"}>{partitions}</Text>
-                                                </Flex>
+                                            </Flex>
                                             </>
                                         ) : (
                                             <Flex justify = "space-between">
-                                            <Text fontWeight={"bold"}>Number of merges: </Text>
-                                            <Text fontWeight={"semibold"}>{merges}</Text>
+                                                <Text fontWeight={"bold"}>Number of merges: </Text>
+                                                <Text fontWeight={"semibold"}>{merges}</Text>
                                             </Flex>
                                         )}
                                         <Flex justify = "space-between">
@@ -133,7 +133,6 @@ class QueryPopup extends React.Component {
                                         <Text fontWeight={"bold"}>Memory Usage: </Text>
                                         <Text fontWeight={"semibold"}>{memoryUsage}mb</Text>
                                         </Flex>
-                                        
                                     </Stack>
                                 </Box>
                                 <Box overflow="hidden">

@@ -7,9 +7,7 @@ import {
   collection,
   getDocs,
   query,
-  where,
-  startAfter,
-  limit
+  where
 } from 'firebase/firestore';
 
 const db = getFirestore(firebase);
@@ -69,13 +67,13 @@ export const getCasesByRequest = async (req, res, next) => {
 
 const performMergeSort = (results, dataCategory, ascending) => {
     const initialMemory = process.memoryUsage().heapUsed;
-    const start = performance.now();
-
     const metrics = { comparisons: 0, merges: 0}
+    
+    const start = performance.now();
     const sortedArray = mergeSort(results, 0, results.length - 1, dataCategory, metrics, ascending);
-
     const end = performance.now();
     const time = (end - start).toFixed(2);
+
     const finalMemory = process.memoryUsage().heapUsed;
     const memoryUsage = Math.round(Math.abs((finalMemory - initialMemory) / 1024 / 1024) * 100) / 100;
 
@@ -86,7 +84,7 @@ const performMergeSort = (results, dataCategory, ascending) => {
         comparisons: metrics.comparisons,
         merges: metrics.merges
     }
-        
+
     return dataObj;
 }
 
