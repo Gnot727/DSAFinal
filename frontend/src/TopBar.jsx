@@ -1,7 +1,5 @@
 import React from "react"
-import { Box, Button, Flex, Text, Select, Stack, Checkbox,Modal,ModalOverlay,
-    ModalContent, ModalHeader, ModalBody, ModalFooter, ModalCloseButton, VStack, Spinner
-} from "@chakra-ui/react";
+import { Box, Button, Flex, Text, Select, Stack, Checkbox, VStack, Spinner } from "@chakra-ui/react";
 import countries from "./assets/custom.geo.json";
 import { ArrowForwardIcon } from '@chakra-ui/icons'
 
@@ -66,7 +64,7 @@ class TopBar extends React.Component {
                     </Box>
                     <Box>
                         <Text fontWeight={"bold"} mb={2}>Data Category</Text>
-                        <Select placeholder='Select an option' 
+                        <Select isRequired={true} placeholder='Select an option' 
                         value ={this.props.dataCategory}
                         onChange={this.props.handleDataCategoryChange}>
                             <option value = "deaths">Deaths</option>
@@ -76,7 +74,7 @@ class TopBar extends React.Component {
                     </Box>
                     <Box>
                         <Text fontWeight={"bold"} mb={2}>Sort Method</Text>
-                        <Select placeholder='Select an option'
+                        <Select isRequired={true} placeholder='Select an option'
                         value={this.props.sortMethod}
                         onChange={this.props.handleSortMethodChange}>
                         <option value = "Merge Sort">Merge Sort</option>

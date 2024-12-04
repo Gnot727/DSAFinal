@@ -3,7 +3,6 @@ import MapComponent from './Map.jsx';
 import TopBar from './TopBar.jsx';
 import { Box, Flex } from "@chakra-ui/react";
 import React, { Component } from 'react';
-import countries from "./assets/custom.geo.json";
 import QueryPopup from './QueryPopup.jsx';
 import axios from "axios";
 import geojson_to_db_map from "./helpers/geojsonDBMap.js"
@@ -54,6 +53,11 @@ class App extends Component {
   }
 
   runQuery = () => {
+    if (this.state.selectedCountry === "" || this.state.category === "" || this.state.sortMethod === "") {
+      alert("Please select a country, data category, and sort method.");
+      return;
+    }
+
     this.setState({ loading: true });
     this.setState({ response: null });
     let countryName = geojson_to_db_map[this.state.selectedCountry.name];
@@ -70,7 +74,11 @@ class App extends Component {
       this.setState({ loading: false });
       this.setState({ response: resp.data });
       this.openModal();
-    })
+      }).catch(err => {
+        this.setState({ loading: false });
+        this.setState({ response: null });
+        this.openModal();
+    });
   }
   
   render() {
@@ -96,6 +104,7 @@ class App extends Component {
         </Flex>
         <QueryPopup modalStatus={this.state.modalStatus} closeModal={this.closeModal}
           response={this.state.response} sortMethod={this.state.sortMethod}
+          country={this.state.selectedCountry}
         />
       </Box>
     )

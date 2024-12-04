@@ -40,7 +40,6 @@ export const getCasesByRequest = async (req, res, next) => {
         }
 
         const querySnapshot = await getDocs(q);
-        console.log(querySnapshot)
         querySnapshot.forEach((doc) => {
             const covidCase = new CovidCase(
                 doc.data().Confirmed,

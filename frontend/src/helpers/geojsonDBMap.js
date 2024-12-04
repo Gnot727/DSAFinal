@@ -15,6 +15,7 @@ const geojson_to_db_map = {
     "Germany": "Germany",
     "Ghana": "Ghana",
     "Greece": "Greece",
+    "Greenland": "Greenland",
     "Grenada": "Grenada",
     "Guatemala": "Guatemala",
     "Guinea": "Guinea",
@@ -86,6 +87,7 @@ const geojson_to_db_map = {
     "Romania": "Romania",
     "Russia": "Russia",
     "Rwanda": "Rwanda",
+    "St-Martin": "St. Martin",
     "St. Kitts and Nevis": "Saint Kitts and Nevis",
     "Saint Lucia": "Saint Lucia",
     "St. Vin. and Gren.": "Saint Vincent and the Grenadines",
@@ -191,7 +193,8 @@ const geojson_to_db_map = {
     "Solomon Is.": "Solomon Islands",
     "Marshall Is.": "Marshall Islands",
     "Vanuatu": "Vanuatu",
-    "Micronesia": "Micronesia"
+    "Micronesia": "Micronesia",
+    "Antarctica": "Antarctica"
 }
 
 export default geojson_to_db_map;

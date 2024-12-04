@@ -1,38 +1,54 @@
 import './App.css';
-import React, { Component } from 'react';
+import React from 'react';
 import {
     Table,
     Thead,
     Tbody,
-    Tfoot,
     Tr,
     Th,
     Td,
-    TableCaption,
     TableContainer,
     Flex,
-    List,
-    ListItem,
-    ListIcon,
-    Tab,
-    Modal,ModalOverlay,
-    ModalContent, ModalHeader, ModalBody, ModalFooter, ModalCloseButton,
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalBody,
+    ModalCloseButton,
     Box,
     Text,
     Stack,
-    Spacer
+    Spacer,
+    IconButton
 } from '@chakra-ui/react'
+import { DownloadIcon } from '@chakra-ui/icons'
 
 class QueryPopup extends React.Component {
     count = 0;
 
     constructor(props) {
-        super(props);
+        super(props)
     }
 
     componentDidUpdate(prevProps) {
         if (this.props.response !== prevProps.response) {
             this.count = 0;
+        }
+    }
+
+    downloadData = () => {
+        const { response, country } = this.props;
+        if (response) {
+            const jsonData = JSON.stringify(response.sorted, null, 2);
+            const file = new Blob([jsonData], {type: 'application/json'});
+            const element = document.createElement("a");
+            element.href = URL.createObjectURL(file);
+            element.download = "covid-data-" + country.name + ".txt";
+            document.body.appendChild(element);
+            element.click();
+        } else {
+            alert("No data to download!")
+            return;
         }
     }
 
@@ -54,7 +70,7 @@ class QueryPopup extends React.Component {
             memoryUsage = response.memoryUsage;
             comparisons = response.comparisons;
             
-            if (this.props.sortMethod == 'Quick Sort') {
+            if (this.props.sortMethod === 'Quick Sort') {
                 swaps = response.swaps;
                 partitions = response.partitions;
             } else {
@@ -66,7 +82,12 @@ class QueryPopup extends React.Component {
             <Modal isOpen={this.props.modalStatus} onClose={this.props.closeModal}>
                 <ModalOverlay>
                     <ModalContent minWidth="75vw" height="75vh">
-                        <ModalHeader>Sort Data Summary </ModalHeader>
+                        <ModalHeader pb={0}>
+                            <Flex>
+                                <Text mr={4}>Sort Data Summary</Text>
+                                <IconButton onClick={this.downloadData} aria-label='download data' icon={<DownloadIcon/>}/>
+                            </Flex>
+                        </ModalHeader>
                         <ModalCloseButton/>
                         <ModalBody>
                             <Flex>
@@ -80,7 +101,7 @@ class QueryPopup extends React.Component {
 
                                         <Flex justify = "space-between">
                                         <Text fontWeight={"bold"}>Execution time:</Text>
-                                        <Text fontWeight={"semibold"}>{time}s</Text>
+                                        <Text fontWeight={"semibold"}>{time}ms</Text>
                                         </Flex>
 
                                         <Flex justify = "space-between">
