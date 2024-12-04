@@ -45,6 +45,7 @@ export const getCasesByRequest = async (req, res, next) => {
             const covidCase = new CovidCase(
                 doc.data().Confirmed,
                 doc.data().Country,
+                doc.data().Province,
                 doc.data().Deaths,
                 doc.data().LastUpdate,
                 doc.data().ObservationDate,
@@ -58,20 +59,58 @@ export const getCasesByRequest = async (req, res, next) => {
         return;
     }
 
-    
-    let sortedArray, time;
-    if (sortMethod === 'merge') {
-        const start = performance.now();
-        sortedArray = mergeSort(results, 0, results.length - 1, dataCategory);
-        const end = performance.now();  
-        time = end - start;
-    } else if (sortMethod === 'quick') {
-        const start = performance.now();
-        sortedArray = quickSort(results, 0, results.length - 1, dataCategory);
-        const end = performance.now();  
-        time = end - start;
+    if (sortMethod === 'Merge Sort') {
+        const dataObj = performMergeSort(results, dataCategory, ascending);
+        res.status(200).send(dataObj);
+    } else if (sortMethod === 'Quick Sort') {
+        const dataObj = performQuickSort(results, dataCategory, ascending)
+        res.status(200).send(dataObj);
+    }
+}
+
+const performMergeSort = (results, dataCategory, ascending) => {
+    const initialMemory = process.memoryUsage().heapUsed;
+    const start = performance.now();
+
+    const metrics = { comparisons: 0, merges: 0}
+    const sortedArray = mergeSort(results, 0, results.length - 1, dataCategory, metrics, ascending);
+
+    const end = performance.now();
+    const time = end - start;
+    const finalMemory = process.memoryUsage().heapUsed;
+    const memoryUsage = Math.round(Math.abs((finalMemory - initialMemory) / 1024 / 1024) * 100) / 100;
+
+    const dataObj = {
+        time: time,
+        sorted: sortedArray,
+        memoryUsage: memoryUsage,
+        comparisons: metrics.comparisons,
+        merges: metrics.merges
+    }
+        
+    return dataObj;
+}
+
+const performQuickSort = (results, dataCategory, ascending) => {
+    const initialMemory = process.memoryUsage().heapUsed;
+    const start = performance.now();
+
+    const metrics = { comparisons: 0, swaps: 0, partitions: 0 };
+    const sortedArray = quickSort(results, 0, results.length - 1, dataCategory, metrics, ascending);
+
+    const end = performance.now();
+    const time = end - start;
+    const finalMemory = process.memoryUsage().heapUsed;
+    const memoryUsage = Math.round(Math.abs((finalMemory - initialMemory) / 1024 / 1024) * 100) / 100;
+
+    const dataObj = {
+        time: time,
+        sorted: sortedArray,
+        memoryUsage: memoryUsage,
+        comparisons: metrics.comparisons,
+        swaps: metrics.swaps,
+        partitions: metrics.partitions
     }
 
-
-    res.status(200).send({ time: time, sorted: sortedArray });
+    return dataObj;
 }
