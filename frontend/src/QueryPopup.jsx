@@ -70,29 +70,48 @@ class QueryPopup extends React.Component {
                         <ModalCloseButton/>
                         <ModalBody>
                             <Flex>
-                                <Box>
-                                    <Stack>
-                                        <Spacer/>
-                                        <Text>Sorted using: {this.props.sortMethod}</Text>
-                                        <Spacer/>
-                                        <Text>Execution time: {time}</Text>
-                                        <Spacer/>
-                                        <Text>Rows retrieved: {rowsNum}</Text>
-                                        <Spacer/>
+                                <Box w="100%" maxW="300px">
+                                    <Stack spacing = {10}>
+                                        <Spacer></Spacer>
+                                        <Flex justify = "space-between">
+                                        <Text fontWeight={"bold"}>Sorted using: </Text>
+                                        <Text fontWeight={"semibold"}>{this.props.sortMethod}</Text>
+                                        </Flex>
+
+                                        <Flex justify = "space-between">
+                                        <Text fontWeight={"bold"}>Execution time:</Text>
+                                        <Text fontWeight={"semibold"}>{time}s</Text>
+                                        </Flex>
+
+                                        <Flex justify = "space-between">
+                                        <Text fontWeight={"bold"}>Rows retrieved: </Text>
+                                        <Text fontWeight={"semibold"}>{rowsNum}</Text>
+                                        </Flex>
                                         {this.props.sortMethod === 'Quick Sort' ? (
                                             <>
-                                                <Text>Number of swaps: {swaps}</Text>
-                                                <Spacer />
-                                                <Text>Number of partitions: {partitions}</Text>
+                                            <Flex justify = "space-between">
+                                                <Text fontWeight={"bold"}>Number of swaps:</Text>
+                                                <Text fontWeight={"semibold"}>{swaps}</Text>
+                                                </Flex>
+                                                <Flex justify = "space-between">
+                                                <Text fontWeight={"bold"}>Number of partitions: </Text>
+                                                <Text fontWeight={"semibold"}>{partitions}</Text>
+                                                </Flex>
                                             </>
                                         ) : (
-                                            <Text>Number of merges: {merges}</Text>
+                                            <Flex justify = "space-between">
+                                            <Text fontWeight={"bold"}>Number of merges: </Text>
+                                            <Text fontWeight={"semibold"}>{merges}</Text>
+                                            </Flex>
                                         )}
-                                        <Spacer/>
-                                        <Text>Number of comparisons: {comparisons}</Text>
-                                        <Spacer/>
-                                        <Text>Memory Usage: {memoryUsage}mb</Text>
-                                        <Spacer />
+                                        <Flex justify = "space-between">
+                                        <Text fontWeight={"bold"}>Number of comparisons: </Text>
+                                        <Text fontWeight={"semibold"}>{comparisons}</Text>
+                                        </Flex>
+                                        <Flex justify = "space-between">
+                                        <Text fontWeight={"bold"}>Memory Usage: </Text>
+                                        <Text fontWeight={"semibold"}>{memoryUsage}mb</Text>
+                                        </Flex>
                                         
                                     </Stack>
                                 </Box>

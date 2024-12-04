@@ -40,7 +40,7 @@ export const getCasesByRequest = async (req, res, next) => {
         }
 
         const querySnapshot = await getDocs(q);
-
+        console.log(querySnapshot)
         querySnapshot.forEach((doc) => {
             const covidCase = new CovidCase(
                 doc.data().Confirmed,
@@ -76,7 +76,7 @@ const performMergeSort = (results, dataCategory, ascending) => {
     const sortedArray = mergeSort(results, 0, results.length - 1, dataCategory, metrics, ascending);
 
     const end = performance.now();
-    const time = end - start;
+    const time = (end - start).toFixed(2);
     const finalMemory = process.memoryUsage().heapUsed;
     const memoryUsage = Math.round(Math.abs((finalMemory - initialMemory) / 1024 / 1024) * 100) / 100;
 
@@ -99,7 +99,7 @@ const performQuickSort = (results, dataCategory, ascending) => {
     const sortedArray = quickSort(results, 0, results.length - 1, dataCategory, metrics, ascending);
 
     const end = performance.now();
-    const time = end - start;
+    const time = (end - start).toFixed(2);
     const finalMemory = process.memoryUsage().heapUsed;
     const memoryUsage = Math.round(Math.abs((finalMemory - initialMemory) / 1024 / 1024) * 100) / 100;
 

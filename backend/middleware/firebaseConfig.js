@@ -1,8 +1,9 @@
 import dotenv from 'dotenv';
 
 dotenv.config();
-
+console.log(dotenv.config());
 const firebaseConfig = {
+  
   apiKey: process.env.API_KEY,
   authDomain: process.env.AUTH_DOMAIN,
   projectId: process.env.PROJECT_ID,
