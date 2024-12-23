@@ -69,7 +69,7 @@ class App extends Component {
         ascending: this.state.isAscending
     }
 
-    axios.post("http://localhost:8080/api/query", options)
+    axios.post("https://covid-19-visualizer.onrender.com/api/query", options)
       .then(resp => {
       this.setState({ loading: false });
       this.setState({ response: resp.data });
